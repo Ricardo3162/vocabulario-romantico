@@ -1,4 +1,406 @@
-<!-- Código HTML completo actualizado -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aprende Vocabulario - Quiz ABCDEF</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #ffe0e9, #ff9a9e);
+      text-align: center;
+      padding: 50px;
+      color: #4e0032;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff8f9;
+      border-radius: 30px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+    .container:hover {
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 48px;
+      color: #d63384;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #c9184a;
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+    p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 14px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      transition: background 0.3s, transform 0.2s;
+      width: 100%;
+      max-width: 300px;
+    }
+    button:hover {
+      background: #c9184a;
+      transform: scale(1.05);
+    }
+    .word-box {
+      font-size: 32px;
+      margin: 25px 0;
+      font-weight: 600;
+      color: #880e4f;
+      background: #ffe0e9;
+      padding: 20px;
+      border-radius: 15px;
+      border: 3px solid #ff9a9e;
+    }
+    .options-container {
+      margin: 30px 0;
+    }
+    .option-btn {
+      background: #f8f9fa;
+      color: #4e0032;
+      border: 2px solid #ff9a9e;
+      margin: 8px 0;
+      font-size: 16px;
+      padding: 15px 20px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+    }
+    .option-btn:hover {
+      background: #ffe0e9;
+      transform: scale(1.02);
+    }
+    .option-btn.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+    }
+    .option-btn.incorrect {
+      background: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+    }
+    .option-letter {
+      font-weight: bold;
+      margin-right: 15px;
+      width: 25px;
+    }
+    #progress {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #6c1e4c;
+    }
+    .loading {
+      color: #ff4d6d;
+      font-size: 18px;
+      margin: 20px 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .heart {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+      background-size: contain;
+      animation: float 6s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Corazones flotantes -->
+  <script>
+    for (let i = 0; i < 25; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+      document.body.appendChild(heart);
+    }
+  </script>
+
+  <!-- Vista de bienvenida -->
+  <div class="container" id="welcome-view">
+    <img src="https://papascineducar.com/wp-content/uploads/2019/01/ComoEntrenarATuDragon3-CCJ-948X557.jpg" alt="Chimuelo"
+         style="max-width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+    <h1>Para mi amor ❤️</h1>
+    <p style="font-size: 20px; color: #c9184a; font-weight: bold;">
+      Aunque los kilómetros nos separen, mi corazón siempre te encuentra. 🌍❤️<br>
+      Te pienso en cada amanecer y te sueño en cada noche estrellada. 🌅🌙<br>
+      Nuestro amor no conoce distancias, porque vive en cada latido y en cada esperanza. 💖<br>
+      Un día estaremos de nuevo uno al lado del otro, pero mientras tanto...<br>
+      quiero que sepas que mi amor por ti crece con cada segundo que pasa. ⏳💕<br>
+      Siempre esperándote, siempre pensándote, eternamente tuyo: tu Chimuelo. 🐉💘
+    </p>
+    <button onclick="start()">💖 Empezar Quiz ABCDEF</button>
+  </div>
+
+  <!-- Vista del quiz -->
+  <div class="container" id="quiz-view" style="display:none">
+    <h2>¿Cómo se dice en inglés?</h2>
+    <div class="word-box" id="spanish-word">Palabra en Español</div>
+    
+    <div class="loading" id="loading">Generando opciones... 🔄</div>
+    
+    <div class="options-container" id="options-container" style="display:none">
+      <button class="option-btn" id="option-a" onclick="selectOption('A')">
+        <span class="option-letter">A.</span><span id="option-a-text"></span>
+      </button>
+      <button class="option-btn" id="option-b" onclick="selectOption('B')">
+        <span class="option-letter">B.</span><span id="option-b-text"></span>
+      </button>
+      <button class="option-btn" id="option-c" onclick="selectOption('C')">
+        <span class="option-letter">C.</span><span id="option-c-text"></span>
+      </button>
+      <button class="option-btn" id="option-d" onclick="selectOption('D')">
+        <span class="option-letter">D.</span><span id="option-d-text"></span>
+      </button>
+      <button class="option-btn" id="option-e" onclick="selectOption('E')">
+        <span class="option-letter">E.</span><span id="option-e-text"></span>
+      </button>
+      <button class="option-btn" id="option-f" onclick="selectOption('F')">
+        <span class="option-letter">F.</span><span id="option-f-text"></span>
+      </button>
+    </div>
+    
+    <button id="next-btn" onclick="nextWord()" style="display:none">➡️ Siguiente Palabra</button>
+    <div id="progress"></div>
+  </div>
+
+  <script>
+    // Lista principal de palabras
+const words = [
+  // Verbos
+  { en: 'Cook', es: 'Cocinar' },
+  { en: 'Eat', es: 'Comer' },
+  { en: 'Drink', es: 'Beber' },
+  { en: 'Play', es: 'Jugar' },
+  { en: 'Read', es: 'Leer' },
+  { en: 'Write', es: 'Escribir' },
+  { en: 'Study', es: 'Estudiar' },
+  { en: 'Fix', es: 'Arreglar' },
+  { en: 'Plant', es: 'Sembrar/Plantar' },
+  { en: 'Brush', es: 'Cepillar' },
+  { en: 'Sleep', es: 'Dormir' },
+  { en: 'Watch', es: 'Ver/Vigilar' },
+  { en: 'Live', es: 'Vivir' },
+  { en: 'Have', es: 'Tener' },
+  { en: 'Answer', es: 'Responder' },
+  { en: 'Go', es: 'Ir' },
+  { en: 'Like', es: 'Gustar' },
+  { en: 'Ride', es: 'Montar' },
+  { en: 'Be', es: 'Estar' },
+  { en: 'Prepare', es: 'Preparar' },
+  { en: 'Paint', es: 'Pintar' },
+  { en: 'Water', es: 'Regar' },
+
+  // Palabras normales
+  { en: 'Living room',      es: 'Sala' },
+  { en: 'Dining room',       es: 'Comedor' },
+  { en: 'Kitchen',           es: 'Cocina' },
+  { en: 'Bedroom',           es: 'Habitación' },
+  { en: 'Bathroom',          es: 'Baño' },
+  { en: 'Restroom',          es: 'Baño' },
+  { en: 'Attic',             es: 'Ático' },
+  { en: 'Basement',          es: 'Sótano' },
+  { en: 'Backyard',          es: 'Patio trasero' },
+  { en: 'Yard',              es: 'Patio' },
+  { en: 'Garden',            es: 'Jardín' },
+  { en: 'Garage',            es: 'Garaje' },
+  { en: 'Sofa / Couch',      es: 'Sofá' },
+  { en: 'Bank',              es: 'Banco' },
+  { en: 'Office',            es: 'Oficina' },
+  { en: 'Table',             es: 'Mesa' },
+  { en: 'Chair',             es: 'Silla' },
+  { en: 'Bed',               es: 'Cama' },
+  { en: 'School',            es: 'Escuela' },
+  { en: 'Classroom',         es: 'Salón de clase' },
+  { en: 'Wife',              es: 'Esposa' },
+  { en: 'Son',               es: 'Hijo' },
+  { en: 'Daughter',          es: 'Hija' },
+  { en: 'Cat',               es: 'Gato' },
+  { en: 'Dog',               es: 'Perro' },
+  { en: 'Box',               es: 'Caja' },
+  { en: 'Together',          es: 'Juntos' },
+  { en: 'Board',             es: 'Tablero' },
+  { en: 'Park',              es: 'Parque' },
+  { en: 'Flower',            es: 'Flor' },
+  { en: 'Car',               es: 'Carro' },
+  { en: 'Fish',              es: 'Pescado' },
+  { en: 'Meat',              es: 'Carne' },
+  { en: 'Big',               es: 'Grande' },
+  { en: 'Lunch',             es: 'Almuerzo' },
+  { en: 'Fun',               es: 'Divertido' },
+  { en: 'Quiet',             es: 'Tranquilo' },
+  { en: 'House / Home',      es: 'Casa' },
+  { en: 'Best',              es: 'Mejor' },
+  { en: 'Friend',            es: 'Amigo/a' },
+  { en: 'Now',               es: 'Ahora' },
+  { en: 'Noodles',           es: 'Fideos' },
+  { en: 'Spaghetti',         es: 'Espagueti' },
+  { en: 'Noise',             es: 'Ruido' },
+  { en: 'Nose',              es: 'Nariz' },
+  { en: 'Name',              es: 'Nombre' },
+  { en: 'After',             es: 'Después' },
+  { en: 'School',            es: 'Escuela' },
+  { en: 'Afternoon',         es: 'Tarde' },
+  { en: 'Best friend',       es: 'Mejor amigo' },
+  { en: 'Favorite food',     es: 'Comida favorita' },
+  { en: 'Backpack',          es: 'Mochila' },
+  { en: 'Park',              es: 'Parque' },
+  { en: 'Noise',             es: 'Ruido' },
+  { en: 'Boy',               es: 'Niño' },
+  { en: "Cat's name",        es: 'Nombre del gato' },
+  { en: 'Bike',              es: 'Bicicleta' },
+  { en: 'Cousin',            es: 'Primo' },
+  { en: 'Grade',             es: 'Grado' },
+  { en: 'Favorite subject',  es: 'Materia favorita' },
+  { en: 'Pet',               es: 'Mascota' },
+  { en: 'Today',             es: 'Hoy' },
+  { en: 'Every',             es: 'Cada' },
+  { en: 'Member',            es: 'Miembro' },
+  { en: 'Part',              es: 'Parte' },
+  { en: 'Thing',             es: 'Cosa' },
+  { en: 'Mother',            es: 'Madre' },
+  { en: 'TV',                es: 'Televisión' },
+  { en: 'Father',            es: 'Padre' },
+  { en: 'Grandfather',       es: 'Abuelo' },
+  { en: 'Sister',            es: 'Hermana' },
+  { en: 'Book',              es: 'Libro' },
+  { en: 'Because',           es: 'Porque' },
+  { en: 'Friend',            es: 'Amigo' },
+  { en: 'Grandmother',       es: 'Abuela' },
+  { en: 'Plant',             es: 'Planta' },
+  { en: 'Very',              es: 'Muy' },
+  { en: 'Happy',             es: 'Feliz' }
+];
+
+    let remaining = [...words];
+    let learned = [];
+    let current = null;
+    let correctAnswer = '';
+    let hasAnswered = false;
+    const letters = ['A','B','C','D','E','F'];
+
+    function start() {
+      document.getElementById('welcome-view').style.display = 'none';
+      document.getElementById('quiz-view').style.display = 'block';
+      nextWord();
+    }
+
+    async function nextWord() {
+      if (remaining.length === 0) {
+        alert('¡Felicidades! Has completado todas las palabras. 🎉');
+        location.reload();
+        return;
+      }
+      hasAnswered = false;
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('options-container').style.display = 'none';
+      document.getElementById('next-btn').style.display = 'none';
+      letters.forEach(l => {
+        const btn = document.getElementById(`option-${l.toLowerCase()}`);
+        btn.className = 'option-btn';
+        btn.disabled = false;
+      });
+
+      current = remaining[Math.floor(Math.random() * remaining.length)];
+      document.getElementById('spanish-word').innerText = current.es;
+      await generateOptions();
+      updateProgress();
+    }
+
+    // API CORS-friendly (Vercel)
+    async function fetchAdditionalWords(count = 20) {
+      const res = await fetch(
+        `https://random-word-api.vercel.app/api?words=${count}`,
+        { mode: 'cors' }
+      );
+      if (!res.ok) throw new Error('Error al obtener palabras de la API');
+      const data = await res.json();
+      return data.map(w => w.charAt(0).toUpperCase() + w.slice(1));
+    }
+
+    async function generateOptions() {
+      const additional = await fetchAdditionalWords(20);
+      const distractors = additional
+        .filter(w => w.toLowerCase() !== current.en.toLowerCase())
+        .filter((w,i,arr) => arr.indexOf(w) === i)
+        .slice(0, 5);
+
+      const options = [ current.en, ...distractors ];
+      const shuffled = shuffleArray(options);
+      correctAnswer = letters[shuffled.indexOf(current.en)];
+
+      letters.forEach((L, idx) => {
+        document.getElementById(`option-${L.toLowerCase()}-text`).innerText = shuffled[idx];
+      });
+
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('options-container').style.display = 'block';
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function selectOption(selected) {
+      if (hasAnswered) return;
+      hasAnswered = true;
+      letters.forEach(l => {
+        document.getElementById(`option-${l.toLowerCase()}`).disabled = true;
+      });
+      document.getElementById(`option-${correctAnswer.toLowerCase()}`).classList.add('correct');
+      if (selected === correctAnswer) {
+        learned.push(current);
+        remaining = remaining.filter(w => w.en !== current.en);
+        setTimeout(nextWord, 1500);
+      } else {
+        document.getElementById(`option-${selected.toLowerCase()}`).classList.add('incorrect');
+        document.getElementById('next-btn').style.display = 'block';
+      }
+    }
+
+    function updateProgress() {
+      document.getElementById('progress').innerText =
+        `Progreso: ${learned.length} de ${words.length} palabras aprendidas 💡`;
+    }
+  </script>
+</body>
+</html>
+
+
+ <!-- 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -196,3 +598,4 @@ Aunque los kilómetros nos separen, mi corazón siempre te encuentra. 🌍❤️
 </script>
 </body>
 </html>
+-->
