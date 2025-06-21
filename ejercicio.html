@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aprende Vocabulario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #ffe0e9, #ff9a9e);
+      text-align: center;
+      padding: 50px;
+      color: #4e0032;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff8f9;
+      border-radius: 30px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+    .container:hover {
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 48px;
+      color: #d63384;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #c9184a;
+    }
+    p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 14px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      transition: background 0.3s, transform 0.2s;
+    }
+    button:hover {
+      background: #c9184a;
+      transform: scale(1.05);
+    }
+    .word-box {
+      font-size: 32px;
+      margin: 25px 0;
+      font-weight: 600;
+      color: #880e4f;
+    }
+    #translation, #result-buttons {
+      margin-top: 20px;
+      display: none;
+    }
+    #progress {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #6c1e4c;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .heart {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+      background-size: contain;
+      animation: float 6s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+<script>
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+    document.body.appendChild(heart);
+  }
+</script>
+
+<div class="container" id="welcome-view">
+  <img src="https://papascineducar.com/wp-content/uploads/2019/01/ComoEntrenarATuDragon3-CCJ-948X557.jpg" alt="Chimuelo"
+       style="max-width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+  <h1>Para mi amor ❤️</h1>
+  <p style="font-size: 20px; color: #c9184a; font-weight: bold;">
+Aunque los kilómetros nos separen, mi corazón siempre te encuentra. 🌍❤️<br>
+  Te pienso en cada amanecer y te sueño en cada noche estrellada. 🌅🌙<br>
+  Nuestro amor no conoce distancias, porque vive en cada latido y en cada esperanza. 💖<br>
+  Un día estaremos de nuevo uno al lado del otro, pero mientras tanto...<br>
+  quiero que sepas que mi amor por ti crece con cada segundo que pasa. ⏳💕<br>
+  Siempre esperándote, siempre pensándote, eternamente tuyo: tu Chimuelo. 🐉💘
+  </p>
+  <button onclick="start()">💖 Empezar</button>
+</div>
+
+<div class="container" id="quiz-view" style="display:none">
+  <h2>¿Cómo se dice en inglés?</h2>
+  <div class="word-box" id="spanish-word">Palabra en Español</div>
+  <button onclick="showTranslation()">👀 Ver</button>
+  <div id="translation">
+    <p id="english-word" class="word-box"></p>
+  </div>
+  <div id="result-buttons">
+    <button onclick="markCorrect()">✅ Respuesta Acertada</button>
+    <button onclick="markWrong()">❌ Respuesta No Acertada</button>
+  </div>
+  <div id="progress"></div>
+</div>
+
+<script>
+  const words = [
+    { en: 'Living room', es: 'Sala' }, { en: 'Dining room', es: 'Comedor' },
+    { en: 'Kitchen', es: 'Cocina' }, { en: 'Bedroom', es: 'Habitación' },
+    { en: 'Bathroom', es: 'Baño' }, { en: 'Restroom', es: 'Baño' },
+    { en: 'Attic', es: 'Ático' }, { en: 'Basement', es: 'Sótano' },
+    { en: 'Backyard', es: 'Patio trasero' }, { en: 'Yard', es: 'Patio' },
+    { en: 'Garden', es: 'Jardín' }, { en: 'Garage', es: 'Garaje' },
+    { en: 'Sofa / Couch', es: 'Sofá' }, { en: 'Bank', es: 'Banco' },
+    { en: 'Office', es: 'Oficina' }, { en: 'Table', es: 'Mesa' },
+    { en: 'Chair', es: 'Silla' }, { en: 'Bed', es: 'Cama' },
+    { en: 'School', es: 'Escuela' }, { en: 'Classroom', es: 'Salón de clase' },
+    { en: 'Wife', es: 'Esposa' }, { en: 'Son', es: 'Hijo' },
+    { en: 'Daughter', es: 'Hija' }, { en: 'Cat', es: 'Gato' },
+    { en: 'Dog', es: 'Perro' }, { en: 'Box', es: 'Caja' },
+    { en: 'Live', es: 'Vivir' }, { en: 'Together', es: 'Juntos' }
+  ];
+
+  let remaining = [...words];
+  let learned = [];
+  let current = null;
+
+  function start() {
+    document.getElementById('welcome-view').style.display = 'none';
+    document.getElementById('quiz-view').style.display = 'block';
+    nextWord();
+  }
+
+  function nextWord() {
+    if (remaining.length === 0) {
+      alert('¡Felicidades! Has acertado todas las palabras.');
+      location.reload();
+      return;
+    }
+    current = remaining[Math.floor(Math.random() * remaining.length)];
+    document.getElementById('spanish-word').innerText = current.es;
+    document.getElementById('translation').style.display = 'none';
+    document.getElementById('result-buttons').style.display = 'none';
+    updateProgress();
+  }
+
+  function showTranslation() {
+    document.getElementById('english-word').innerText = current.en;
+    document.getElementById('translation').style.display = 'block';
+    document.getElementById('result-buttons').style.display = 'block';
+  }
+
+  function markCorrect() {
+    learned.push(current);
+    remaining = remaining.filter(word => word.en !== current.en);
+    nextWord();
+  }
+
+  function markWrong() {
+    nextWord();
+  }
+
+  function updateProgress() {
+    const total = words.length;
+    const done = learned.length;
+    document.getElementById('progress').innerText = `Progreso: ${done} de ${total} palabras aprendidas 💡`;
+  }
+</script>
+</body>
+</html>
+
